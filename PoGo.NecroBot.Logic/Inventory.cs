@@ -91,12 +91,12 @@ namespace PoGo.NecroBot.Logic
             var pokemonFiltered = (_logicSettings.KeepMinOperator.ToLower().Equals("and")) ?
                 myPokemon.Where(
                     p => p.DeployedFortId == string.Empty &&
-                            p.Favorite == 0 && (p.Cp < GetPokemonTransferFilter(p.PokemonId).KeepMinCp ||
-                                                PokemonInfo.CalculatePokemonPerfection(p) < GetPokemonTransferFilter(p.PokemonId).KeepMinIvPercentage)) :
+                            p.Favorite == 0 && !(p.Cp > GetPokemonTransferFilter(p.PokemonId).KeepMinCp &&
+                                                PokemonInfo.CalculatePokemonPerfection(p) > GetPokemonTransferFilter(p.PokemonId).KeepMinIvPercentage)) :
                 myPokemon.Where(
                     p => p.DeployedFortId == string.Empty &&
-                            p.Favorite == 0 && (p.Cp < GetPokemonTransferFilter(p.PokemonId).KeepMinCp &&
-                                                PokemonInfo.CalculatePokemonPerfection(p) < GetPokemonTransferFilter(p.PokemonId).KeepMinIvPercentage));
+                            p.Favorite == 0 && !(p.Cp > GetPokemonTransferFilter(p.PokemonId).KeepMinCp ||
+                                                PokemonInfo.CalculatePokemonPerfection(p) > GetPokemonTransferFilter(p.PokemonId).KeepMinIvPercentage));
 
             if (filter != null)
                 pokemonFiltered = pokemonFiltered.Where(p => !filter.Contains(p.PokemonId));
